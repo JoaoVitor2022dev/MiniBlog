@@ -1,0 +1,8 @@
+
+/* corpo do site, ira ser o container */
+.container {
+    min-height: 60vh; /* altura minima... */
+    margin-bottom: 5rem; /* afastar os elementos abaixo */
+}
+
+

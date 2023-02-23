@@ -1,0 +1,2 @@
+terminamos te colocar as rotas on navbar e colocamos tambem na nav link 
+agora vamos fazer o css da navbar e do footer

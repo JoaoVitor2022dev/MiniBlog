@@ -1,0 +1,1 @@
+teminamos os style geral do projeto sempre pega na index.css, inputs, button, links e margins padding e fonts 

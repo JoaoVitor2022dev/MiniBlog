@@ -1,6 +1,9 @@
 // import logica do compoenente
 import { useState, useEffect } from "react";
 
+// hookss
+import { useAuthentication } from "../../hooks/useAuthentication";
+
 // style - css
 import styles from "../Register/Register.module.css";
 
@@ -12,8 +15,11 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword]  = useState("");
     const [error, setError] = useState("");
 
+    // hooks com authenticaçao com o fire-base
+    const { createUser, error: authError, loading} = useAuthentication(); 
+
     // enviar dados...
-   const handleSubmit =  (event) => {
+   const handleSubmit = async (event) => {
     event.preventDefault(); 
 
     // zerar erros 
@@ -31,8 +37,17 @@ const Register = () => {
         setError("As senhas precisam ser iguais!");
      }
 
-     console.log(user);
+    // conectando os dados com o hook de dados com fire base 
+     const res = await createUser(user);
+
+     console.log(res);
    }; 
+
+   useEffect(() => {
+      if (authError) {
+        setError(authError);
+      }
+   }, [authError]);
 
   return (
     <div className={styles.register}>
@@ -79,8 +94,9 @@ const Register = () => {
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 />
             </label>
-            <button className="btn">Cadastrar</button>
-            {error && <p className="error">{error}</p> }
+             {!loading && <button className="btn">Cadastrar</button>} 
+             {loading && <button className="btn" disabled>Aguarde</button>} 
+             {error && <p className="error">{error}</p> }
         </form>
     </div>
   )

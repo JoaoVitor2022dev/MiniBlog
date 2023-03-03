@@ -1,8 +1,16 @@
 // routers 
 import { BrowserRouter, Routes, Route , Navigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+
+// hooks 
+import { useState, useEffect } from "react";
 
 // css style
 import './App.css';
+
+
+// context 
+import { AuthProvider } from "../src/context/AuthContext";
 
 // pages 
 import About from "./pages/About/About";
@@ -18,18 +26,20 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <div className="App">
-     <BrowserRouter>
-       <NavBar/>
-         <div className="container">
+    <AuthProvider>
+      <BrowserRouter>
+        <NavBar/>
+          <div className="container">
              <Routes>
                  <Route path="/" element={<Home/>} />
                  <Route path="/about" element={<About/>}/>
                  <Route path="/login" element={<Login/>} />
                  <Route path="/register" element={<Register/>}/>
              </Routes>
-         </div>
-       <Footer/>  
-     </BrowserRouter>
+           </div>
+         <Footer/>  
+       </BrowserRouter>
+     </AuthProvider>
     </div>
   );
 }

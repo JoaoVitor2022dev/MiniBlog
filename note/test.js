@@ -37,37 +37,40 @@ const createUser = async ( data ) => {
     setLoading(true);  
     setError(null);       
     
-    try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
+   try {
+ 
+    const { user } = createUserWithEmailAndPassword(
+        auth, 
         data.email,
         data.password
-      );
+    );
+ 
+    await updateProfile(user, {
+        displayName: data.displayName
+    })
 
-      await updateProfile(user, {
-        displayName: data.displayName,
-      });
+    return user
+    
+   } catch (error) {
+     
+    console.log(error.message);
+    console.log(typeof error.message);
+ 
+     
+   let systemErrorMessage; 
 
-      setLoading(false);
+   
+   if (error.message.includes("Password")) {
+    systemErrorMessage = "A senha precisa conter pelo menos 6 caracteres.";
+  } else if (error.message.includes("auth/email-already-in-use")) {
+    systemErrorMessage = "E-mail já cadastrado."
+  } else {
+    systemErrorMessage = "Ocorreu um erro, por favor tenta mais tarde.";
+  }
 
-      return user;
-    } catch (error) {
-      console.log(error.message);
-      console.log(typeof error.message);
-
-      let systemErrorMessage;
-
-      if (error.message.includes("Password")) {
-        systemErrorMessage = "A senha precisa conter pelo menos 6 caracteres.";
-      } else if (error.message.includes("email-already")) {
-        systemErrorMessage = "E-mail já cadastrado.";
-      } else {
-        systemErrorMessage = "Ocorreu um erro, por favor tenta mais tarde.";
-      }
-
-      setLoading(true); 
-      setError(systemErrorMessage);
-    }
+    setError(systemErrorMessage);
+     
+   }
  
    // aqui acaba o loading do processo...
   
